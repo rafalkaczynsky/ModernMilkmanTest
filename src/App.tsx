@@ -1,6 +1,11 @@
-import React from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Grid, AppBar, Typography } from "@material-ui/core";
 import "./App.scss";
+import { RootState } from "./modules/rootState";
+import { getProducts } from "./modules/stock";
+import { connect } from "react-redux";
+import { Product } from "./models";
+import * as serviceWorker from './serviceWorker';
 
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -23,20 +28,43 @@ const ListItem = () => (
 		</div>
 	</Grid>
 );
-function App() {
+
+interface MainScreenProps {
+	error: string;
+	isLoading: boolean;
+	products: Product[];
+	getProducts: () => Promise<string[]>;
+}
+
+const App = (props: MainScreenProps): ReactElement => {
+	const { getProducts, isLoading, products, error } = props;
+	const [refreshing, setRefreshing] = useState<boolean>(false);
+
+	useEffect(() => {
+		if(!products.length){
+			getProducts();
+		}
+	}, []);
+
+	const handleOnRefresh = () => {
+		setRefreshing(true);
+		getProducts()
+			//@ts-ignore
+			.then((res) => setRefreshing(false))
+			//@ts-ignore
+			.catch((error) => {
+				alert(error);
+				setRefreshing(false);
+			});
+	};
+
 	return (
 		<div className="App">
 			<AppBar position="sticky" className="App-bar">
 				<Typography variant="h6">Modern Milkman Test App</Typography>
 			</AppBar>
 
-			<Grid
-				container
-				xs={12}
-				spacing={0}
-				justify={"center"}
-				style={{ padding: 10 }}
-			>
+			<Grid container spacing={0} justify={"center"} style={{ padding: 10 }}>
 				<Grid item xs={12} md={4} className="Menu-container">
 					<div className="Menu-item-container">
 						<div className="Menu-item">Item 1</div>
@@ -56,7 +84,7 @@ function App() {
 					</Grid>
 					<Grid container item xs={12}>
 						{data.map((item) => (
-							<ListItem />
+							<ListItem key={item} />
 						))}
 					</Grid>
 				</Grid>
@@ -67,6 +95,16 @@ function App() {
 			</div>
 		</div>
 	);
-}
+};
 
-export default App;
+const mapStateToProps = (state: RootState) => ({
+	products: state.stock.products,
+	error: state.stock.error,
+	isLoading: state.stock.isLoading,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+	getProducts: () => dispatch(getProducts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
