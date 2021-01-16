@@ -5,8 +5,7 @@ import { RootState } from "./modules/rootState";
 import { getProducts } from "./modules/stock";
 import { connect } from "react-redux";
 import { Product } from "./models";
-import * as serviceWorker from './serviceWorker';
-
+import { generateSessionId } from './utils/utils';
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const ListItem = () => (
@@ -37,26 +36,29 @@ interface MainScreenProps {
 }
 
 const App = (props: MainScreenProps): ReactElement => {
-	const { getProducts, isLoading, products, error } = props;
+	const {
+		getProducts,
+		isLoading,
+		products,
+		error,
+	} = props;
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 
 	useEffect(() => {
-		if(!products.length){
-			getProducts();
-		}
+		let data = sessionStorage.getItem("session");
+		data ? handleOnRefresh() : handleNewPageLoad();
 	}, []);
 
 	const handleOnRefresh = () => {
-		setRefreshing(true);
-		getProducts()
-			//@ts-ignore
-			.then((res) => setRefreshing(false))
-			//@ts-ignore
-			.catch((error) => {
-				alert(error);
-				setRefreshing(false);
-			});
-	};
+		getProducts();
+	}
+
+	const handleNewPageLoad = () => {
+		sessionStorage.setItem("session", generateSessionId(10));
+		if (!products.length) {
+			getProducts();
+		}
+	}
 
 	return (
 		<div className="App">
