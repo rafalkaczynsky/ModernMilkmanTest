@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { store, persistor } from "./store";
 import * as serviceWorker from "./serviceWorkerRegistration";
 import { CircularProgress } from "@material-ui/core";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
 	<React.StrictMode>

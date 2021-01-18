@@ -40,10 +40,10 @@ export type StockActionTypes =
 	| getProductsSuccessAction
 	| getProductsFailedAction;
 	
-export default function (
+const stock = (
 	state: State = StockInitialState,
 	action: StockActionTypes
-): State {
+): State => {
 	return produce(state, (draft) => {
 		switch (action.type) {
 			case StockTypeKeys.GET_PRODUCTS_ATTEMPT:
@@ -81,3 +81,5 @@ export const getProducts = () => (dispatch: any) => {
 		});
 	return dogs;
 };
+
+export default stock;

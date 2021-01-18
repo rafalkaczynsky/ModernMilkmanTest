@@ -24,7 +24,7 @@ const ProductCard = (props: ProductCardProps): ReactElement => {
 		>
 			<div className="Product-list-item">
 				<div className="Product-image-box" style={{ position: "relative" }}>
-					<img className="Product-item-image" src={getImage(categoryName)} />
+					<img className="Product-item-image" src={getImage(categoryName)} alt={title}/>
 					{stockStatus !== "ok" && (
 						<img
 							style={{
@@ -40,6 +40,7 @@ const ProductCard = (props: ProductCardProps): ReactElement => {
 								zIndex: 10,
 							}}
 							src={getImage(stockStatus)}
+							alt={stockStatus}
 						/>
 					)}
 				</div>
@@ -50,7 +51,7 @@ const ProductCard = (props: ProductCardProps): ReactElement => {
 					</p>
 					<a
 						className="Product-item-button"
-						href="https://themodernmilkman.co.uk/products/view/1002"
+						href="https://www.google.com"
 					>
 						<p>Buy</p>
 					</a>

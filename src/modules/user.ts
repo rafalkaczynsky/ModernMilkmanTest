@@ -23,10 +23,10 @@ export interface SetUserAction {
 
 export type UserActionTypes = SetUserAction;
 
-export default function (
+const user =  (
 	state: State = UserInitialState,
 	action: UserActionTypes
-): State {
+): State => {
 	return produce(state, (draft) => {
 		switch (action.type) {
 			case UserTypeKeys.SET_USER:
@@ -39,3 +39,5 @@ export default function (
 export const setUser = (user: User) => (dispatch: any) => {
 	dispatch({ type: UserTypeKeys.SET_USER, payload: user });
 };
+
+export default user;

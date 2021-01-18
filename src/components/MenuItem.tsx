@@ -9,7 +9,7 @@ export interface MenuItemProps {
 
 const MenuItem = (props: MenuItemProps): ReactElement => (
 	<li className="Category-list-item" onClick={() => props.onSelect()}>
-		<a
+		<div  
 			className={
 				props.isActive
 					? "Category-list-item-text-active"
@@ -17,7 +17,7 @@ const MenuItem = (props: MenuItemProps): ReactElement => (
 			}
 		>
 			{props.item}
-		</a>
+		</div>
 	</li>
 );
 

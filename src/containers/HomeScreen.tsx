@@ -4,10 +4,8 @@ import { Grid } from "@material-ui/core";
 import { RootState } from "../modules/rootState";
 import { getProducts } from "../modules/stock";
 import { Product, ProductData } from "../models";
-import {
-	generateSessionId
-} from "../utils/utils";
-import { descriptionText } from '../constants';
+import { generateSessionId } from "../utils/utils";
+import { descriptionText } from "../constants";
 import "../App.scss";
 import { MenuItem, ProductCard, Footer, MainAppBar } from "../components";
 
@@ -19,19 +17,9 @@ interface MainScreenProps {
 }
 
 const HomeScreen = (props: MainScreenProps): ReactElement => {
-	const { getProducts, isLoading, products } = props;
+	const { getProducts, products } = props;
 	const [selectedCategory, setSelectedCategory] = useState<string>("");
 	const [categories, setCategories] = useState<string[]>([]);
-
-	useEffect(() => {
-		let data: string | null = sessionStorage.getItem("session");
-		data ? handleOnRefresh() : handleNewPageLoad();
-
-		if (products.length) {
-			const newCategories: string[] = products.map((product) => product.title);
-			setCategories(newCategories);
-		}
-	}, []);
 
 	const handleOnRefresh = (): void => {
 		getProducts();
@@ -43,6 +31,18 @@ const HomeScreen = (props: MainScreenProps): ReactElement => {
 			getProducts();
 		}
 	};
+
+	const onDidMount = () => {
+		let data: string | null = sessionStorage.getItem("session");
+		data ? handleOnRefresh() : handleNewPageLoad();
+
+		if (products.length) {
+			const newCategories: string[] = products.map((product) => product.title);
+			setCategories(newCategories);
+		}
+	};
+
+	useEffect(onDidMount, []);
 
 	const isItemSelected = (cat: string): boolean =>
 		cat === selectedCategory ? true : false;
@@ -91,6 +91,7 @@ const HomeScreen = (props: MainScreenProps): ReactElement => {
 		<ul style={{ marginRight: 30 }}>
 			{categories.map((cat) => (
 				<MenuItem
+					key={cat}
 					item={cat}
 					onSelect={() => setSelectedCategory(cat)}
 					isActive={isItemSelected(cat)}
