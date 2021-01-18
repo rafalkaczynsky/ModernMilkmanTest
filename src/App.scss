@@ -1,64 +1,247 @@
+//Pallete
+$app-background: #dfefe9;
+$green: #36945a;
+$white: #ffffff;
+$black: #000000;
+$light-blue: #33b5e5;
+$light-grey:  #aebee2;
+
+
+// App styles
 .App {
-  flex-grow: 1;
-  // padding: 10px;
+	flex-grow: 1;
+	font-family: cursive;
+	background-color: $app-background;
+}
+
+.App-content {
+	padding: 10px 80px;
 }
 
 .App-bar {
-  margin-bottom: 15px;
-  padding: 20px;
-  flex-direction: row;
-  align-items: center;
+	margin-bottom: 15px;
+	flex-direction: row;
+	align-items: center;
+	background-color: $light-grey;
 }
 
 .Tool-bar {
-  width: 100%;
-  justify-content: center;
+	width: 100%;
+	justify-content: center;
 }
 
 .Header-button {
-  position: absolute;
-  right: 30px;
+	position: absolute;
+	right: 30px;
+}
+
+.Header-title {
+	font-size: 30px;
+	letter-spacing: 3.4px;
+	padding: 0px;
 }
 
 .Bottom-app-bar {
-  padding: 20px;
-  background: rgb(57, 68, 104);
-  color:#b2b3f1;
-  text-align: center;
-  // vertical-align: center;
+	padding: 20px;
+	background: rgb(57, 68, 104);
+	color: #b2b3f1;
+	text-align: center;
 }
 
 .Menu-item-container {
-  width: auto;
-  padding-right: 10px;
-  padding-left: 10px;
+	width: auto;
+	padding-right: 10px;
+	padding-left: 10px;
+	margin-right: 40px;
 }
 
 .Menu-item {
-  background-color:#b2b3f1;
-  color:#14262b;
+	background-color: #6cc4d4;
+	color: #d9eff5;
+	font-size: 20px;
+	font-weight: 800;
+	letter-spacing: 3.4px;
 }
 
 .Menu-container {
-  padding: 10px;
-  align-items: 'center';
-  justify-content: 'center';
-  padding-left: 4px;
-  padding-right: 4px;
+	padding: 10px;
+	align-items: "center";
+	justify-content: "center";
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
-@media (min-width:960px) {
-  .Menu-item-container {
-    padding-left: 0px;
-  }
-  .Menu-container {
-    padding-left: 0px;
-    padding-top: 0px;
-  }
-} 
+.Product-main-container {
+	justify-content: space-around;
+	align-items: flex-start;
+	flex-wrap: "wrap";
+}
 
-@media (max-width:960px) { 
-  .App-bar {
-    margin-bottom: 0px;
-  }
-} 
+.Product-list-container {
+	display: flex;
+	width: 100%;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding-top: 20px;
+}
+
+.Product-list-item {
+	display: inline-block;
+	margin-bottom: 40px;
+	vertical-align: top;
+	text-align: center;
+	max-height: 390px;
+	margin: 0px 6px 20px 6px;
+}
+
+.Product-item-image {
+	height: 190px;
+	width: auto;
+	max-width: 100%;
+	vertical-align: middle;
+	border-style: none;
+	z-index: 100;
+}
+
+.Product-item-content {
+	padding: 15px 0px;
+	margin-bottom: 20px;
+}
+
+.Product-item-content h3 {
+	font-size: 20px;
+	height: 70px;
+	margin-bottom: 0px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.Product-item-content p {
+	font-size: 21px;
+	margin: 0;
+	font-weight: 500;
+}
+
+.Product-item-button {
+	margin: 10px;
+}
+
+.Banner-container {
+	width: 100%;
+	height: 267px;
+	background: url(https://img.freepik.com/free-photo/jug-fresh-milk-wooden-table_23-2148239865.jpg?size=626&ext=jpg)
+		no-repeat center;
+	background-size: cover;
+	position: relative;
+	margin: 0;
+}
+
+.Banner-content {
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	box-sizing: border-box;
+	width: 80%;
+	height: auto;
+	background-color: rgba(255, 255, 255, 0.8);
+	position: absolute;
+	text-align: center;
+	color: #130b58;
+	margin: 6% 0% 0% 10%;
+	padding: 2%;
+}
+
+.Product-list-responsive-box {
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.Category-list-item {
+	list-style: none;
+	text-align: center;
+	background-color: $green;
+	margin-right: 40px;
+	line-height: 60px;
+	text-decoration: none;
+	width: auto;
+	margin: 5px;
+}
+
+.Category-list-item-text {
+	text-decoration: none;
+	color: $white;
+	display: block;
+	font-size: 17px;
+	font-weight: 800;
+	letter-spacing: 3.4px;
+}
+
+.Category-list-item-text:hover {
+	font-size: 26px;
+	text-decoration: none;
+	color: $black;
+	background-color: $light-blue;
+	cursor: pointer;
+}
+
+.Category-list-item-text-active {
+	text-decoration: none;
+	display: block;
+	font-size: 20px;
+	font-weight: 800;
+	letter-spacing: 3.4px;
+	color: $black;
+	background-color: $light-blue;
+}
+
+// Breakpoints
+@media (min-width: 960px) {
+	.Menu-item-container {
+		padding-left: 0px;
+	}
+	.Menu-container {
+		padding-left: 0px;
+		padding-top: 0px;
+	}
+}
+
+@media (max-width: 960px) {
+	.App-bar {
+		margin-bottom: 0px;
+	}
+
+	.App-content {
+		padding: 10px 40px;
+	}
+
+	.Menu-item-container {
+		margin-right: 0px;
+	}
+
+	.Product-main-container {
+		align-items: center;
+	}
+
+	.Product-list-container {
+		justify-content: space-around;
+	}
+}
+
+@media (max-width: 600px) {
+	.App-content {
+		padding: 10px 20px;
+	}
+	.Header-title {
+		font-size: 25px;
+		letter-spacing: 1.5px;
+		padding: 0px;
+	}
+	.Header-button {
+		position: absolute;
+		right: 30px;
+		font-size: 20px;
+	}
+}

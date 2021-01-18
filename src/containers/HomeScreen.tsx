@@ -1,40 +1,15 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-	Grid,
-	AppBar,
-	Typography,
-	Toolbar,
-	Button,
-	IconButton,
-} from "@material-ui/core";
-import "../App.scss";
+import { Grid } from "@material-ui/core";
 import { RootState } from "../modules/rootState";
 import { getProducts } from "../modules/stock";
-import { Product } from "../models";
-import { generateSessionId } from "../utils/utils";
-
-const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-const ListItem = () => (
-	<Grid item xs={6} sm={4} md={3}>
-		<div
-			style={{
-				alignItems: "center",
-				justifyContent: "center",
-				padding: 10,
-			}}
-		>
-			<div
-				style={{
-					width: "100%",
-					backgroundColor: "blue",
-					height: 200,
-				}}
-			/>
-		</div>
-	</Grid>
-);
+import { Product, ProductData } from "../models";
+import {
+	generateSessionId
+} from "../utils/utils";
+import { descriptionText } from '../constants';
+import "../App.scss";
+import { MenuItem, ProductCard, Footer, MainAppBar } from "../components";
 
 interface MainScreenProps {
 	error: string;
@@ -44,72 +19,107 @@ interface MainScreenProps {
 }
 
 const HomeScreen = (props: MainScreenProps): ReactElement => {
-	const { getProducts, isLoading, products, error } = props;
-	const [refreshing, setRefreshing] = useState<boolean>(false);
+	const { getProducts, isLoading, products } = props;
+	const [selectedCategory, setSelectedCategory] = useState<string>("");
+	const [categories, setCategories] = useState<string[]>([]);
 
 	useEffect(() => {
-		let data = sessionStorage.getItem("session");
+		let data: string | null = sessionStorage.getItem("session");
 		data ? handleOnRefresh() : handleNewPageLoad();
+
+		if (products.length) {
+			const newCategories: string[] = products.map((product) => product.title);
+			setCategories(newCategories);
+		}
 	}, []);
 
-	const handleOnRefresh = () => {
+	const handleOnRefresh = (): void => {
 		getProducts();
 	};
 
-	const handleNewPageLoad = () => {
+	const handleNewPageLoad = (): void => {
 		sessionStorage.setItem("session", generateSessionId(10));
 		if (!products.length) {
 			getProducts();
 		}
 	};
 
-	return (
-		<div className="App">
-			<AppBar position="sticky" className="App-bar">
-				<Toolbar className="Tool-bar">
-					<Typography variant="h6">Modern Milkman Test App</Typography>
-					<Button color="inherit" href={"/about"} style={{position: 'absolute', right: 30}}>
-						About
-					</Button>
-				</Toolbar>
-			</AppBar>
+	const isItemSelected = (cat: string): boolean =>
+		cat === selectedCategory ? true : false;
 
-			<Grid container spacing={0} justify={"center"} style={{ padding: 10 }}>
-				<Grid item xs={12} md={4} className="Menu-container">
-					<div className="Menu-item-container">
-						<div className="Menu-item">Item 1</div>
-					</div>
-					<div className="Menu-item-container">
-						<div className="Menu-item">Item 1</div>
-					</div>
-				</Grid>
+	const renderProducts = (): ReactElement => {
+		const selectedProductGroup = products.find(
+			(productGroup) => productGroup.title === selectedCategory
+		);
+		const items =
+			selectedProductGroup && selectedProductGroup.data.length
+				? selectedProductGroup.data
+				: [];
+		const categoryName =
+			selectedProductGroup && selectedProductGroup.title
+				? selectedProductGroup.title
+				: "Unknown";
 
-				<Grid
-					container
-					item
-					xs={12}
-					md={8}
-					spacing={1}
-					style={{ flex: 1, flexGrow: 1 }}
-				>
-					<Grid item xs={12}>
-						<div style={{ alignItems: "center", justifyContent: "center" }}>
-							<div
-								style={{ width: "100%", backgroundColor: "red", height: 200 }}
-							/>
-						</div>
-					</Grid>
-					<Grid container item xs={12}>
-						{data.map((item) => (
-							<ListItem key={item} />
-						))}
-					</Grid>
-				</Grid>
+		return (
+			<Grid item xs={12} className="Product-list-container">
+				{items &&
+					items.map((productItem: ProductData) => (
+						<ProductCard
+							key={productItem.key}
+							productItem={productItem}
+							categoryName={categoryName}
+						/>
+					))}
+			</Grid>
+		);
+	};
+
+	const renderBanner = (): ReactElement => (
+		<div className="Banner-container">
+			<div className="Banner-content">
+				<h3>{selectedCategory ? selectedCategory : "No category selected"} </h3>
+				<p>
+					{selectedCategory
+						? descriptionText
+						: "Please select category from the list ..."}
+				</p>
+			</div>
+		</div>
+	);
+
+	const renderCategoryMenu = (): ReactElement => (
+		<ul style={{ marginRight: 30 }}>
+			{categories.map((cat) => (
+				<MenuItem
+					item={cat}
+					onSelect={() => setSelectedCategory(cat)}
+					isActive={isItemSelected(cat)}
+				/>
+			))}
+		</ul>
+	);
+
+	const renderMainAppBar = (): ReactElement => <MainAppBar />;
+	const renderFooter = (): ReactElement => <Footer />;
+
+	const renderContent = (): ReactElement => (
+		<Grid container spacing={0} justify={"center"} className="App-content">
+			<Grid item xs={12} md={4}>
+				{renderCategoryMenu()}
 			</Grid>
 
-			<div className="Bottom-app-bar">
-				<p>Powered by Rafal Kaczynski - 2021</p>
-			</div>
+			<Grid item xs={12} md={8} className="Product-main-container">
+				{renderBanner()}
+				{renderProducts()}
+			</Grid>
+		</Grid>
+	);
+
+	return (
+		<div className="App">
+			{renderMainAppBar()}
+			{renderContent()}
+			{renderFooter()}
 		</div>
 	);
 };

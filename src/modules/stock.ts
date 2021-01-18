@@ -38,7 +38,8 @@ export interface getProductsFailedAction {
 export type StockActionTypes =
 	| getProductsAttemptAction
 	| getProductsSuccessAction
-    | getProductsFailedAction;
+	| getProductsFailedAction;
+	
 export default function (
 	state: State = StockInitialState,
 	action: StockActionTypes
