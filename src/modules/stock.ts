@@ -1,7 +1,6 @@
 import produce from "immer";
 import { getProductsApi } from "../api/repositories";
 import { Product } from "../models";
-// import { convertDogsArray, removeImagesBySubBreed, transformSubreedName } from '../utils/utils';
 
 export enum StockTypeKeys {
 	GET_PRODUCTS_ATTEMPT = "stock/GET_PRODUCTS_ATTEMPT",
